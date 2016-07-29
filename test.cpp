@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <sys/wait.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,12 +10,12 @@
 #include <fcntl.h>
 using namespace std;
 int case_test();
-int mem_test();
+//int mem_test();
 int main(){
     cout<<"case test running......"<<endl;
     case_test();
     cout<<"memory test running......"<<endl;
-    mem_test();
+//    mem_test();
     return 0;
 }
 
@@ -39,9 +40,35 @@ int case_test(){
             exit(1);
         }
         pid_t p2=fork();
-        if(p2==0){
-            int fd_null
+        if(p2==0){//child process
+            int fd_null=open("/dev/null",O_RDWR);
+            dup2(fd_null,STDOUT_FILENO);
+            execlp("diff","diff","your_vector.txt","your_vector_solution.txt");
+            perror("Execlp diff failed");
+            exit(1);
+        }
+        else if(p2>0){
+            int status2;
+            waitpid(p2,&status2,0);
+            if(WIFEXITED(status2)){
+                if(WEXITSTATUS(status2)!=0){
+                    cout<<"case test failed"<<endl;
+                }
+                else{
+                    cout<<"case test passed"<<endl;
+                }
+            }
+            
+        }
+        else{
+            perror("Failed to fork");
+            exit(1);
         }
 
     }
+    else{
+        perror("Failed to fork");
+        exit(1);
+    }
+    return 0;
 }

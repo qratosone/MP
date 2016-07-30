@@ -14,7 +14,7 @@ string standard="no leaks are possible";
 string filename="valgrind_out_solutions.txt";
 int case_test();
 int mem_test();
-bool valgrind_substr(string filename);
+
 int main(){
     cout<<"case test running......"<<endl;
     case_test();
@@ -117,21 +117,4 @@ int case_test(){
         exit(1);
     }
     return 0;
-}
-bool valgrind_substr(string filename){
-    ifstream file;
-    file.open(filename,ios::in|ios::out);
-    if(file.fail()){
-        perror("failed to open valgrind text files");
-        exit(1);
-    }
-    string line;
-    bool flag=false;
-    while(getline(file,line)){
-        if(line.find(standard)!=-1){
-            flag=true;
-        }
-    }
-    file.close();
-    return flag;
 }

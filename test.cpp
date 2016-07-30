@@ -31,7 +31,13 @@ int mem_test(){
             perror("Failed to open txt file");
             exit(1);
         }
-        dup2(fd,STDOUT_FILENO);
+        int fd_null=open("/dev/null",O_RDWR);
+        if(fd_null<0){
+            perror("Failed to open txt file");
+            exit(1);
+        }
+        dup2(fd_null,STDOUT_FILENO);
+        dup2(fd,STDERR_FILENO);
         execlp("valgrind","./your_vector.out",NULL);
         perror("Execlp failed:");
         exit(1);

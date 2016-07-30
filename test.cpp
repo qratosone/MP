@@ -10,6 +10,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 using namespace std;
+string standard="no leaks are possible";
+string filename="valgrind_out_solutions.txt";
 int case_test();
 int mem_test();
 bool valgrind_substr(string filename);
@@ -40,11 +42,20 @@ int mem_test(){
             perror("Failed to wait");
             exit(1);
         }
-        if(valgrind_substr("valgrind_test.txt")){
-            cout<<"Memory test passed"<<endl;
+        ifstream file;
+        file.open(filename,ios::in|ios::out);
+        if(file.fail()){
+            perror("failed to open valgrind text files");
+            exit(1);
         }
-        else{
-            cout<<"Memory test failed"<<endl;
+        string line;
+        bool flag=false;
+        while(getline(file,line)){
+            if(line.find(standard)!=-1){
+                flag=true;
+            }
+        }
+        file.close();
         }
     }
     else{

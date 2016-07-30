@@ -5,17 +5,52 @@
 #include <string.h>
 #include <signal.h>
 #include <iostream>
+#include <string>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 using namespace std;
 int case_test();
-//int mem_test();
+int mem_test();
+bool valgrind_substr(string filename);
 int main(){
     cout<<"case test running......"<<endl;
     case_test();
     cout<<"memory test running......"<<endl;
 //    mem_test();
+    return 0;
+}
+int mem_test(){
+    pid_t p1=fork();
+    if(p1==0){
+        int fd=open("valgrind_test.txt",O_RDWR | O_CLOEXEC | O_TRUNC | O_CREAT, S_IRWXU | S_IRWXG);
+        if(fd<0){
+            perror("Failed to open txt file");
+            exit(1);
+        }
+        dup2(fd,STDOUT_FILENO);
+        execlp("valgrind","./your_vector.out",NULL);
+        perror("Execlp failed:");
+        exit(1);
+    }
+    else if(p1>0){
+        int status;
+        pid_t w_result=waitpid(p1,&status,0);
+        if(w_result==-1){
+            perror("Failed to wait");
+            exit(1);
+        }
+        if(valgrind_substr("valgrind_test.txt")){
+            cout<<"Memory test passed"<<endl;
+        }
+        else{
+            cout<<"Memory test failed"<<endl;
+        }
+    }
+    else{
+        perror("Failed to fork");
+        exit(1);
+    }
     return 0;
 }
 
@@ -71,4 +106,21 @@ int case_test(){
         exit(1);
     }
     return 0;
+}
+bool valgrind_substr(string filename){
+    ifstream file;
+    file.open(filename,ios::in|ios::out);
+    if(file.fail()){
+        perror("failed to open valgrind text files");
+        exit(1);
+    }
+    string line;
+    bool flag=false;
+    while(getline(file,line)){
+        if(line.find(standard)!=-1){
+            flag=true;
+        }
+    }
+    file.close();
+    return flag;
 }

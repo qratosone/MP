@@ -30,7 +30,7 @@ public:
         number=0;
     }
     ~vector(){
-        
+	delete[] data;        
     }
     void insert(int value){
         if(number==size){

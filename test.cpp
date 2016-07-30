@@ -12,7 +12,7 @@
 #include <fcntl.h>
 using namespace std;
 string standard="no leaks are possible";
-string filename="valgrind_out_solutions.txt";
+string filename="valgrind_test.txt";
 int case_test();
 int mem_test();
 
@@ -38,7 +38,7 @@ int mem_test(){
         }
         dup2(fd_null,STDOUT_FILENO);
         dup2(fd,STDERR_FILENO);
-        execlp("valgrind","./your_vector.out",NULL);
+        execlp("valgrind","valgrind","./your_vector.out",NULL);
         perror("Execlp failed:");
         exit(1);
     }
@@ -59,7 +59,9 @@ int mem_test(){
         bool flag=false;
         while(getline(file,line)){
             if(line.find(standard)!=-1){
-                flag=true;
+//                cout<<"get!"<<endl;
+//		cout<<line<<endl;
+		flag=true;
             }
         }
         if(flag){

@@ -47,3 +47,5 @@ Temporary Items
 .apdisk
 .vscode/.BROWSE.VC.DB-shm
 *.DB-wal
+.vscode/.BROWSE.VC.DB
+*.DB

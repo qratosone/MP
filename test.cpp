@@ -6,6 +6,7 @@
 #include <signal.h>
 #include <iostream>
 #include <string>
+#include <fstream>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>

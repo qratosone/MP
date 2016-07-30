@@ -58,7 +58,7 @@ int mem_test(){
         }
         file.close();
         }
-    }
+    
     else{
         perror("Failed to fork");
         exit(1);

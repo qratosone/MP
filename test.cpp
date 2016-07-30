@@ -17,13 +17,18 @@ int case_test();
 int mem_test();
 
 int main(){
+    int total_score=0;
     cout<<"case test running......"<<endl;
-    case_test();
+    total_score+=case_test();
     cout<<"memory test running......"<<endl;
-    mem_test();
+    total_score+=mem_test();
+    cout<<"Testing Result"<<endl;
+    cout<<"================================"<<endl;
+    cout<<"Your total score is "<<total_score<<" ."<<endl;
     return 0;
 }
 int mem_test(){
+    
     pid_t p1=fork();
     if(p1==0){
         int fd=open("valgrind_test.txt",O_RDWR | O_CLOEXEC | O_TRUNC | O_CREAT, S_IRWXU | S_IRWXG);
@@ -64,14 +69,18 @@ int mem_test(){
 		flag=true;
             }
         }
+        file.close();
         if(flag){
-            cout<<"memory test passed"<<endl;
+            cout<<"Memory Test . . .[50 points] passed"<<endl;
+	    return 50;
         }
         else{
-            cout<<"memory test failed"<<endl;
+            cout<<"Memory Test . . .[50 points] FAILED"<<endl;
+            return 0;
         }
-        file.close();
-        }
+        
+
+    }
     
     else{
         perror("Failed to fork");
@@ -81,6 +90,7 @@ int mem_test(){
 }
 
 int case_test(){
+   
     pid_t p1=fork();
     if(p1==0){//child process
         int fd=open("your_vector.txt",O_RDWR | O_CLOEXEC | O_TRUNC | O_CREAT, S_IRWXU | S_IRWXG);
@@ -113,10 +123,12 @@ int case_test(){
             waitpid(p2,&status2,0);
             if(WIFEXITED(status2)){
                 if(WEXITSTATUS(status2)!=0){
-                    cout<<"case test failed"<<endl;
-                }
+                    cout<<"Case Test . . .[50 points] FAILED"<<endl;
+                    return 0;
+		 }
                 else{
-                    cout<<"case test passed"<<endl;
+                    cout<<"Case test . . .[50 points] passed"<<endl;
+		    return 50;
                 }
             }
             

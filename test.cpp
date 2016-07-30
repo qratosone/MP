@@ -20,7 +20,7 @@ int main(){
     cout<<"case test running......"<<endl;
     case_test();
     cout<<"memory test running......"<<endl;
-//    mem_test();
+    mem_test();
     return 0;
 }
 int mem_test(){
@@ -61,6 +61,12 @@ int mem_test(){
             if(line.find(standard)!=-1){
                 flag=true;
             }
+        }
+        if(flag){
+            cout<<"memory test passed"<<endl;
+        }
+        else{
+            cout<<"memory test failed"<<endl;
         }
         file.close();
         }

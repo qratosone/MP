@@ -6,11 +6,11 @@ LDFLAGS = -std=c++11
 .PHONY : clean TAGS all
 
 all : main
-	mv main ../
+	./main
 main:main.cpp your_vector.o
 
-your_vector.o:../include/your_vector.cpp
-	
+your_vector.o:your_vector.cpp
+
 clean :
 	-rm -rf *.o $(EXENAME) *.dSYM
 

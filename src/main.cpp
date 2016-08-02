@@ -1,5 +1,6 @@
 #include <cstdio>
 #include "your_vector.h"
+using std::cin;
 int main(){
     freopen("testcase.in","r",stdin);
     vector v1(5);

@@ -43,7 +43,7 @@ int mem_test(){
         }
         dup2(fd_null,STDOUT_FILENO);
         dup2(fd,STDERR_FILENO);
-        execlp("valgrind","valgrind","./your_vector.out",NULL);
+        execlp("valgrind","valgrind","./main",NULL);
         perror("Execlp failed:");
         exit(1);
     }

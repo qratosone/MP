@@ -12,7 +12,7 @@
 #include <fcntl.h>
 using namespace std;
 string standard="no leaks are possible";
-string filename="valgrind_test.txt";
+string filename="output/valgrind_test.txt";
 int case_test();
 int mem_test();
 
@@ -31,7 +31,7 @@ int mem_test(){
     
     pid_t p1=fork();
     if(p1==0){
-        int fd=open("valgrind_test.txt",O_RDWR | O_CLOEXEC | O_TRUNC | O_CREAT, S_IRWXU | S_IRWXG);
+        int fd=open("output/valgrind_test.txt",O_RDWR | O_CLOEXEC | O_TRUNC | O_CREAT, S_IRWXU | S_IRWXG);
         if(fd<0){
             perror("Failed to open txt file");
             exit(1);
@@ -93,13 +93,13 @@ int case_test(){
    
     pid_t p1=fork();
     if(p1==0){//child process
-        int fd=open("your_vector.txt",O_RDWR | O_CLOEXEC | O_TRUNC | O_CREAT, S_IRWXU | S_IRWXG);
+        int fd=open("output/your_vector.txt",O_RDWR | O_CLOEXEC | O_TRUNC | O_CREAT, S_IRWXU | S_IRWXG);
         if(fd<0){
             perror("Failed to open txt file");
             exit(1);
         }
         dup2(fd,STDOUT_FILENO);
-        execlp("./your_vector.out","./your_vector.out",NULL);
+        execlp("./main","./main",NULL);
         perror("Execlp failed:");
         exit(1);
     }
@@ -114,7 +114,7 @@ int case_test(){
         if(p2==0){//child process
             int fd_null=open("/dev/null",O_RDWR);
             dup2(fd_null,STDOUT_FILENO);
-            execlp("diff","diff","your_vector.txt","your_vector_solution.txt");
+            execlp("diff","diff","output/your_vector.txt","output/your_vector_solution.txt");
             perror("Execlp diff failed");
             exit(1);
         }

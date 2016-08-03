@@ -1,5 +1,4 @@
 #include <cstdio>
-#include <iostream>
 #include "your_vector.h"
 using std::cin;
 int main(){
